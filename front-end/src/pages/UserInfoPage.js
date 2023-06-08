@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './UserInfoPage.css';
 
 export const UserInfoPage = () => {
     // We'll use the history to navigate the user
@@ -51,32 +52,46 @@ export const UserInfoPage = () => {
     
     // And here we have the JSX for our component. It's pretty straightforward
     return (
+        <div className="content">
         <div className="content-container">
             <h1>Info for ______</h1>
             {showSuccessMessage && <div className="success">Successfully saved user data!</div>}
             {showErrorMessage && <div className="fail">Uh oh... something went wrong and we couldn't save changes</div>}
-            <label>
-                Favorite Food:
+            <div>
+                <label>
+                    Favorite Food:
+                </label>
                 <input
                     onChange={e => setFavoriteFood(e.target.value)}
-                    value={favoriteFood} />
-            </label>
-            <label>
-                Hair Color:
+                    value={favoriteFood}
+                />
+            </div>
+
+            <div>
+                <label>
+                    Hair Color:
+                </label>
                 <input
                     onChange={e => setHairColor(e.target.value)}
-                    value={hairColor} />
-            </label>
-            <label>
-                Bio:
+                    value={hairColor}
+                />
+            </div>
+
+            <div>
+                <label>
+                    Bio:
+                </label>
                 <input
                     onChange={e => setBio(e.target.value)}
-                    value={bio} />
-            </label>
+                    value={bio}
+                />
+            </div>
+            
             <hr />
             <button onClick={saveChanges}>Save Changes</button>
             <button onClick={resetValues}>Reset Values</button>
             <button onClick={logOut}>Log Out</button>
+        </div>
         </div>
     );
 }
