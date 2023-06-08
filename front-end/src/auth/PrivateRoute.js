@@ -1,8 +1,12 @@
-import { Navigate, Route } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+/* import { useUser } from "./useUser"; */
+import { useToken } from "./useToken";
 
-export const PrivateRoute = ( props ) => {
+export const PrivateRoute = ({ children }) => {
 
-    const user = null;
+    /* const user = useUser(); */
+
+    const [token] = useToken();
 
     /**
      * 
@@ -14,9 +18,13 @@ export const PrivateRoute = ( props ) => {
      * 
      */
 
-    return user ? (
-        <Route {...props} />
-    ) : (
-        <Navigate state={{ from: props.path }} replace to="/login" />
-    );
+    if (!token) return <Navigate to="/login" />
+
+    /**
+     * 
+     * if user is logged in, render the component
+     * 
+     */
+
+    return children;
 }

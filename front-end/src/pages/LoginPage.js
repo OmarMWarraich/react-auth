@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useToken } from '../auth/useToken';
 
 export const LoginPage = () => {
     /**
@@ -9,7 +11,7 @@ export const LoginPage = () => {
      * value and the third one for the error message we
      * will display if the user enters the wrong email or password
      */
-
+    const [token, setToken] = useToken();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -25,7 +27,14 @@ export const LoginPage = () => {
     const onLoginClicked = async () => {
         // Send the user's email and password to the server
         // in a Login request
-        alert('Login functionality not implemented yet');
+        const response = await axios.post('/api/login', {
+            email: email,
+            password: password,
+        });
+
+        const { token } = response.data;
+        setToken(token);
+        navigate('/');
     }
 
     return (

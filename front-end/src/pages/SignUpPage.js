@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useToken } from '../auth/useToken';
 
 export const SignUpPage = () => {
     /**
@@ -10,13 +12,18 @@ export const SignUpPage = () => {
      * value and the third one for the error message we
      * will display if the user enters the wrong email or password
      * and the fourth one for the confirm password input's value
+     * 
+     * The fifth one uses useToken hook to create a piece of state
+     * and it is for the token we will get back from the server
+     * after the user successfully signs up
      *
      */
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [emailVal, setEmailVal] = useState('');
+    const [passwordVal, setPasswordVal] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [token, setToken] = useToken();
 
     /**
      * 
@@ -35,7 +42,15 @@ export const SignUpPage = () => {
          * 
          */
     
-        alert('SignUp functionality not implemented yet');
+        const response = await axios.post('/api/signup', {
+            email: emailVal,
+            password: passwordVal,
+        });
+
+        const { token } = response.data;
+        setToken(token);
+        navigate('/');
+
     }
 
     return (
@@ -46,15 +61,15 @@ export const SignUpPage = () => {
             <input
                 type="email"
                 placeholder="Email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
+                value={emailVal}
+                onChange={e => setEmailVal(e.target.value)}
             />
 
             <input
                 type="password"
                 placeholder="Password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
+                value={passwordVal}
+                onChange={e => setPasswordVal(e.target.value)}
             />
 
             <input
@@ -67,7 +82,7 @@ export const SignUpPage = () => {
             <hr />
 
             <button
-                disabled={!email || !password || password !== confirmPassword}
+                disabled={!emailVal || !passwordVal || passwordVal !== confirmPassword}
                 onClick={onSignUpClicked}
             >
                 Sign Up
